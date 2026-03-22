@@ -41,7 +41,8 @@ addTodoForm.addEventListener("submit", (evt) => {
   const date = new Date(dateInput);
   date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
 
-  const values = { name, date };
+  const id = uuidv4(); // Implements use of unique ID's that we imported from v4.
+  const values = { name, date, id }; // Values included for each todo item.
   const todo = generateTodo(values);
   todosList.append(todo);
   closeModal(addTodoPopup);
