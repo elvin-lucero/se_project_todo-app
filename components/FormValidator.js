@@ -21,8 +21,15 @@ class FormValidator {
       hideInputError(this._formElement, inputElement, settings);
     }
   }
+
+  _hasInvalidInut(inputList) {
+    return inputList.some((inputElement) => {
+      return !inputElement.validity.valid;
+    });
+  }
+
   _toggleButtonState() {
-    if (hasInvalidInput(inputList)) {
+    if (this._hasInvalidInput(inputList)) {
       buttonElement.classList.add(settings.inactiveButtonClass);
       buttonElement.disabled = true;
     } else {
