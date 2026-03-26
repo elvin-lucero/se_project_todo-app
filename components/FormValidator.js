@@ -1,7 +1,7 @@
 class FormValidator {
   constructor(settings, formElement) {
-    this._formSelector = settings._formSelector;
-    this._inputSelector = settings._inputSelector;
+    this._formSelector = settings.formSelector;
+    this._inputSelector = settings.inputSelector;
     this._submitButtonSelector = settings.submitButtonSelector;
     this._errorClass = settings.errorClass;
     this._inputErrorClass = settings.inputErrorClass;
@@ -79,13 +79,19 @@ class FormValidator {
   }
 
   resetValidation() {
+    /* Creates a new array of all input elements in the form.
+    Finds all elements that match input selector and converts them to an array. */
     this._inputList = Array.from(
       this._formElement.querySelectorAll(this._inputSelector)
     );
+    /* Loops through each input element and calls _hideInputError() to remove 
+    any error styling and clear error messages. */
     this._inputList.forEach((inputElement) => {
       this._hideInputError(this._formElement, inputElement);
     });
+    // Clears all form fields.
     this._formElement.reset();
+    // Updates the submit button state.
     this._toggleButtonState();
   }
 }
