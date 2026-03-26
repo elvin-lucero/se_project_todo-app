@@ -1,17 +1,17 @@
-# Simple Todo App
+# TripleTen Sprint 7 Project: Simple Todo App
 
-Give a brief description of the project here. Feel free to give it a different name.
+A simple todo app that was does all your basic todo app needs.
 
 ## Functionality
 
-Give a more detailed explanation of the project and its functionality.
+Add tasks, complete tasks, delete tasks.
 
 ## Technology
 
-Give a description of the technologies and techniques used. Pictures, GIFs, or screenshots that detail the project features are recommended.
+Implemented OOP using JavaScript to showcase skills and make sure app is working properly along with setting proper validation for the app's inputs.
 
 ## Deployment
 
 This project is deployed on GitHub Pages:
 
-- ADD LINK HERE
+- [PROJECT LINK](https://elvin-lucero.github.io/se_project_todo-app/)
