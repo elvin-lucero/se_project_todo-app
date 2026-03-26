@@ -67,6 +67,9 @@
   line-height: 1.2;
   font-weight: 500;
   color: #f44;
+}
+
+.todo__delete-btn:hover {
   cursor: pointer;
 }
 

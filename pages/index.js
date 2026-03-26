@@ -32,12 +32,21 @@ addTodoButton.addEventListener("click", () => {
 
 addTodoCloseBtn.addEventListener("click", () => {
   closeModal(addTodoPopup);
+  newTodoValidator.resetValidation();
 });
+
+function renderTodo(item) {
+  const todo = generateTodo(item);
+  todosList.append(todo);
+}
 
 addTodoForm.addEventListener("submit", (evt) => {
   evt.preventDefault();
   const name = evt.target.name.value;
   const dateInput = evt.target.date.value;
+
+  // Guard: Check if form is valid before proceeding
+  if (!addTodoForm.checkValidity()) return;
 
   // Create a date object and adjust for timezone
   const date = new Date(dateInput);
@@ -45,15 +54,13 @@ addTodoForm.addEventListener("submit", (evt) => {
 
   const id = uuidv4(); // Implements use of unique ID's that we imported from v4.
   const values = { name, date, id }; // Values included for each todo item.
-  const todo = generateTodo(values);
-  todosList.append(todo);
+  renderTodo(values);
   closeModal(addTodoPopup);
   newTodoValidator.resetValidation();
 });
 
 initialTodos.forEach((item) => {
-  const todo = generateTodo(item);
-  todosList.append(todo);
+  renderTodo(item);
 });
 
 const newTodoValidator = new FormValidator(validationConfig, addTodoForm);

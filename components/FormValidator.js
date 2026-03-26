@@ -9,31 +9,31 @@ class FormValidator {
     this._formElement = formElement;
   }
 
-  _showInputError(formElement, inputElement, errorMessage) {
+  _showInputError(inputElement, errorMessage) {
     const errorElementId = `#${inputElement.id}-error`;
-    const errorElement = formElement.querySelector(errorElementId);
+    const errorElement = this._formElement.querySelector(errorElementId);
     inputElement.classList.add(this._inputErrorClass);
-    errorElement.textContent = errorMessage;
-    errorElement.classList.add(this._errorClass);
+    if (errorElement) {
+      errorElement.textContent = errorMessage;
+      errorElement.classList.add(this._errorClass);
+    }
   }
 
-  _hideInputError(formElement, inputElement) {
+  _hideInputError(inputElement) {
     const errorElementId = `#${inputElement.id}-error`;
-    const errorElement = formElement.querySelector(errorElementId);
+    const errorElement = this._formElement.querySelector(errorElementId);
     inputElement.classList.remove(this._inputErrorClass);
-    errorElement.classList.remove(this._errorClass);
-    errorElement.textContent = "";
+    if (errorElement) {
+      errorElement.classList.remove(this._errorClass);
+      errorElement.textContent = "";
+    }
   }
 
   _checkInputValidity(inputElement) {
     if (!inputElement.validity.valid) {
-      this._showInputError(
-        this._formElement,
-        inputElement,
-        inputElement.validationMessage
-      );
+      this._showInputError(inputElement, inputElement.validationMessage);
     } else {
-      this._hideInputError(this._formElement, inputElement);
+      this._hideInputError(inputElement);
     }
   }
 
@@ -79,19 +79,13 @@ class FormValidator {
   }
 
   resetValidation() {
-    /* Creates a new array of all input elements in the form.
-    Finds all elements that match input selector and converts them to an array. */
-    this._inputList = Array.from(
-      this._formElement.querySelectorAll(this._inputSelector)
-    );
-    /* Loops through each input element and calls _hideInputError() to remove 
-    any error styling and clear error messages. */
+    // Use the existing this._inputList (no need to rebuild it)
     this._inputList.forEach((inputElement) => {
-      this._hideInputError(this._formElement, inputElement);
+      this._hideInputError(inputElement);
     });
-    // Clears all form fields.
+
+    // Reset the form and update button state
     this._formElement.reset();
-    // Updates the submit button state.
     this._toggleButtonState();
   }
 }
