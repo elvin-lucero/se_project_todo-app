@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from "https://jspm.dev/uuid"; // Enables Unique IDs for 
 import { initialTodos, validationConfig } from "../utils/constants.js";
 import Todo from "../components/Todo.js";
 import FormValidator from "../components/FormValidator.js";
+import Section from "../components/Section.js";
 
 const addTodoButton = document.querySelector(".button_action_add");
 const addTodoPopup = document.querySelector("#add-todo-popup");
@@ -10,6 +11,17 @@ const addTodoForm = addTodoPopup.querySelector(".popup__form");
 const addTodoCloseBtn = addTodoPopup.querySelector(".popup__close");
 // const todoTemplate = document.querySelector("#todo-template"); -> remove.
 const todosList = document.querySelector(".todos__list");
+
+const section = new Section({
+  items: [], // TODO: pass initial todos.
+  renderer: () => {
+    // TODO: generate todo function.
+    // Add it to the todo list.
+    // (Refer to the forEach loop in this file.)
+  },
+  containerSelector: ".todo__list"
+});
+// TOOD: call section instance's renderItems method.
 
 const openModal = (modal) => {
   modal.classList.add("popup_visible");
@@ -37,7 +49,7 @@ addTodoCloseBtn.addEventListener("click", () => {
 
 function renderTodo(item) {
   const todo = generateTodo(item);
-  todosList.append(todo);
+  todosList.append(todo); // TODO: Use addItem method instead of .append(todo)
 }
 
 addTodoForm.addEventListener("submit", (evt) => {
@@ -59,9 +71,9 @@ addTodoForm.addEventListener("submit", (evt) => {
   newTodoValidator.resetValidation();
 });
 
-initialTodos.forEach((item) => {
+/* initialTodos.forEach((item) => {
   renderTodo(item);
-});
+}); */
 
 const newTodoValidator = new FormValidator(validationConfig, addTodoForm);
 newTodoValidator.enableValidation();
