@@ -9,16 +9,16 @@ const addTodoButton = document.querySelector(".button_action_add");
 const addTodoPopup = document.querySelector("#add-todo-popup");
 const addTodoForm = addTodoPopup.querySelector(".popup__form");
 const addTodoCloseBtn = addTodoPopup.querySelector(".popup__close");
-// const todoTemplate = document.querySelector("#todo-template"); -> remove.
 const todoList = document.querySelector(".todo__list");
 
-// The logic in this function should all be handled in the Todo class located in Todo.js
+// Logic located in Todo.js
 const generateTodo = (data) => {
   const todo = new Todo(data, "#todo-template");
   const todoElement = todo.getView();
   return todoElement;
 };
 
+// Logic located in Section.js
 const section = new Section({
   items: initialTodos,
   renderer: (item) => {
@@ -54,9 +54,8 @@ addTodoForm.addEventListener("submit", (evt) => {
   // Guard: Check if form is valid before proceeding
   if (!addTodoForm.checkValidity()) return;
 
-  // Create a date object and adjust for timezone
-  const date = new Date(dateInput);
-  date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
+  const date = new Date(dateInput); // Createa a date object
+  date.setMinutes(date.getMinutes() + date.getTimezoneOffset()); // Adjust date and time for timezone
 
   const id = uuidv4(); // Implements use of unique ID's that we imported from v4.
   const values = { name, date, id }; // Values included for each todo item.
