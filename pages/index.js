@@ -10,18 +10,24 @@ const addTodoPopup = document.querySelector("#add-todo-popup");
 const addTodoForm = addTodoPopup.querySelector(".popup__form");
 const addTodoCloseBtn = addTodoPopup.querySelector(".popup__close");
 // const todoTemplate = document.querySelector("#todo-template"); -> remove.
-const todosList = document.querySelector(".todos__list");
+const todoList = document.querySelector(".todo__list");
+
+// The logic in this function should all be handled in the Todo class located in Todo.js
+const generateTodo = (data) => {
+  const todo = new Todo(data, "#todo-template");
+  const todoElement = todo.getView();
+  return todoElement;
+};
 
 const section = new Section({
-  items: [], // TODO: pass initial todos.
-  renderer: () => {
-    // TODO: generate todo function.
-    // Add it to the todo list.
-    // (Refer to the forEach loop in this file.)
+  items: initialTodos,
+  renderer: (item) => {
+    const todoElement = generateTodo(item);
+    section.addItem(todoElement);
   },
   containerSelector: ".todo__list"
 });
-// TOOD: call section instance's renderItems method.
+section.renderItems();
 
 const openModal = (modal) => {
   modal.classList.add("popup_visible");
@@ -29,13 +35,6 @@ const openModal = (modal) => {
 
 const closeModal = (modal) => {
   modal.classList.remove("popup_visible");
-};
-
-// The logic in this function should all be handled in the Todo class located in Todo.js
-const generateTodo = (data) => {
-  const todo = new Todo(data, "#todo-template");
-  const todoElement = todo.getView();
-  return todoElement;
 };
 
 addTodoButton.addEventListener("click", () => {
@@ -46,11 +45,6 @@ addTodoCloseBtn.addEventListener("click", () => {
   closeModal(addTodoPopup);
   newTodoValidator.resetValidation();
 });
-
-function renderTodo(item) {
-  const todo = generateTodo(item);
-  todosList.append(todo); // TODO: Use addItem method instead of .append(todo)
-}
 
 addTodoForm.addEventListener("submit", (evt) => {
   evt.preventDefault();
@@ -66,14 +60,11 @@ addTodoForm.addEventListener("submit", (evt) => {
 
   const id = uuidv4(); // Implements use of unique ID's that we imported from v4.
   const values = { name, date, id }; // Values included for each todo item.
-  renderTodo(values);
+  const todoValues = generateTodo(values);
+  section.addItem(todoValues);
   closeModal(addTodoPopup);
   newTodoValidator.resetValidation();
 });
-
-/* initialTodos.forEach((item) => {
-  renderTodo(item);
-}); */
 
 const newTodoValidator = new FormValidator(validationConfig, addTodoForm);
 newTodoValidator.enableValidation();
