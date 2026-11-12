@@ -14,7 +14,23 @@ const todoList = document.querySelector(".todo__list");
 
 const addTodoPopup = new PopupWithForm({
   popupSelector: "#add-todo-popup",
-  handleFormSubmit: () => {}
+  handleFormSubmit: (inputValues) => {
+    const name = inputValues.name;
+    const dateInput = inputValues.date;
+
+    // Guard: Check if form is valid before proceeding
+    if (!addTodoForm.checkValidity()) return;
+
+    const date = new Date(dateInput); // Createa a date object
+    date.setMinutes(date.getMinutes() + date.getTimezoneOffset()); // Adjust date and time for timezone
+
+    const id = uuidv4(); // Implements use of unique ID's that we imported from v4.
+    const values = { name, date, id }; // Values included for each todo item.
+    const todoValues = generateTodo(values);
+    section.addItem(todoValues);
+    addTodoPopup.close();
+    newTodoValidator.resetValidation();
+  }
 });
 addTodoPopup.setEventListeners();
 
@@ -38,25 +54,6 @@ section.renderItems();
 
 addTodoButton.addEventListener("click", () => {
   addTodoPopup.open();
-});
-
-addTodoForm.addEventListener("submit", (evt) => {
-  evt.preventDefault();
-  const name = evt.target.name.value;
-  const dateInput = evt.target.date.value;
-
-  // Guard: Check if form is valid before proceeding
-  if (!addTodoForm.checkValidity()) return;
-
-  const date = new Date(dateInput); // Createa a date object
-  date.setMinutes(date.getMinutes() + date.getTimezoneOffset()); // Adjust date and time for timezone
-
-  const id = uuidv4(); // Implements use of unique ID's that we imported from v4.
-  const values = { name, date, id }; // Values included for each todo item.
-  const todoValues = generateTodo(values);
-  section.addItem(todoValues);
-  addTodoPopup.close();
-  newTodoValidator.resetValidation();
 });
 
 const newTodoValidator = new FormValidator(validationConfig, addTodoForm);
