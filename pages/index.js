@@ -16,6 +16,7 @@ const addTodoPopup = new PopupWithForm({
   popupSelector: "#add-todo-popup",
   handleFormSubmit: () => {}
 });
+addTodoPopup.setEventListeners();
 
 // Logic located in Todo.js
 const generateTodo = (data) => {
@@ -37,11 +38,6 @@ section.renderItems();
 
 addTodoButton.addEventListener("click", () => {
   addTodoPopup.open();
-});
-
-addTodoCloseBtn.addEventListener("click", () => {
-  addTodoPopup.close();
-  newTodoValidator.resetValidation();
 });
 
 addTodoForm.addEventListener("submit", (evt) => {
