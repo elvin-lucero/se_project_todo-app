@@ -35,20 +35,12 @@ const section = new Section({
 });
 section.renderItems();
 
-const openModal = (modal) => {
-  modal.classList.add("popup_visible");
-};
-
-const closeModal = (modal) => {
-  modal.classList.remove("popup_visible");
-};
-
 addTodoButton.addEventListener("click", () => {
-  openModal(addTodoPopupEl);
+  addTodoPopup.open();
 });
 
 addTodoCloseBtn.addEventListener("click", () => {
-  closeModal(addTodoPopupEl);
+  addTodoPopup.close();
   newTodoValidator.resetValidation();
 });
 
@@ -67,7 +59,7 @@ addTodoForm.addEventListener("submit", (evt) => {
   const values = { name, date, id }; // Values included for each todo item.
   const todoValues = generateTodo(values);
   section.addItem(todoValues);
-  closeModal(addTodoPopupEl);
+  addTodoPopup.close();
   newTodoValidator.resetValidation();
 });
 
