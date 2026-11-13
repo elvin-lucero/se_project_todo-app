@@ -10,7 +10,7 @@ class Todo {
 
   // Change completion from true to false or vice versa.
   _toggleCompletion = () => {
-    this._data.completed = !this._data.completed;
+    this._completed = !this._completed;
   };
 
   // Remove todo element
@@ -25,13 +25,13 @@ class Todo {
     this._todoDeleteBtn.addEventListener("click", () => {
       this._handleDelete(this._completed);
       this._remove();
-      this._handleTotal();
+      this._handleTotal(false);
     });
 
     // Set 'change' event listener for the checkbox.
     this._todoCheckboxEl.addEventListener("change", () => {
       this._toggleCompletion();
-      this._handleCheck(this._data.completed);
+      this._handleCheck(this._completed);
     });
   }
 
