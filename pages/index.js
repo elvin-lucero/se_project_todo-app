@@ -5,6 +5,7 @@ import Todo from "../components/Todo.js";
 import FormValidator from "../components/FormValidator.js";
 import Section from "../components/Section.js";
 import PopupWithForm from "../components/PopupWithForm.js";
+import TodoCounter from "../components/TodoCounter.js";
 
 const addTodoButton = document.querySelector(".button_action_add");
 const addTodoPopupEl = document.querySelector("#add-todo-popup");
@@ -12,13 +13,34 @@ const addTodoForm = addTodoPopupEl.querySelector(".popup__form");
 const addTodoCloseBtn = addTodoPopupEl.querySelector(".popup__close");
 const todoList = document.querySelector(".todo__list");
 
+/// TODOCOUNTER.JS ///
+
+const todoCounter = new TodoCounter(initialTodos, ".counter__text");
+
+//
+function handleCheck(completed) {
+  todoCounter.updateCompleted(completed);
+}
+
+function handleDelete(completed) {
+  if (completed) {
+    todoCounter.updateCompleted(false);
+  }
+}
+
+function handleTotal(total) {
+  todoCounter.updateTotal(total);
+}
+
+/// POPUPWITHFORM.JS ///
+
 const addTodoPopup = new PopupWithForm({
   popupSelector: "#add-todo-popup",
   handleFormSubmit: (inputValues) => {
     const name = inputValues.name;
     const dateInput = inputValues.date;
 
-    // Guard: Check if form is valid before proceeding
+    // Guard: Checks if form is valid before proceeding
     if (!addTodoForm.checkValidity()) return;
 
     const date = new Date(dateInput); // Createa a date object
@@ -30,18 +52,27 @@ const addTodoPopup = new PopupWithForm({
     section.addItem(todoValues);
     addTodoPopup.close();
     newTodoValidator.resetValidation();
+    todoCounter.updateTotal(true);
   }
 });
 addTodoPopup.setEventListeners();
 
-// Logic located in Todo.js
+/// TODO.JS ///
+
 const generateTodo = (data) => {
-  const todo = new Todo(data, "#todo-template");
+  const todo = new Todo(
+    data,
+    "#todo-template",
+    handleCheck,
+    handleDelete,
+    handleTotal
+  );
   const todoElement = todo.getView();
   return todoElement;
 };
 
-// Logic located in Section.js
+/// SECTION.JS ///
+
 const section = new Section({
   items: initialTodos,
   renderer: (item) => {

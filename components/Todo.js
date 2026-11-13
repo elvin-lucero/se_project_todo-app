@@ -1,19 +1,37 @@
 class Todo {
-  constructor(data, selector) {
+  constructor(data, selector, handleCheck, handleDelete, handleTotal) {
+    this._completed = data.completed;
     this._data = data;
     this._templateElement = document.querySelector(selector);
+    this._handleCheck = handleCheck;
+    this._handleDelete = handleDelete;
+    this._handleTotal = handleTotal;
   }
+
+  // Change completion from true to false or vice versa.
+  _toggleCompletion = () => {
+    this._data.completed = !this._data.completed;
+  };
+
+  // Remove todo element
+  _remove = () => {
+    this._todoElement.remove();
+    // Assigns null to the element, helps as a garbage collector.
+    this._todoElement = null;
+  };
 
   _setEventListeners() {
     // Implements delete functionality.
     this._todoDeleteBtn.addEventListener("click", () => {
-      this._todoElement.remove();
+      this._handleDelete(this._completed);
+      this._remove();
+      this._handleTotal();
     });
 
-    //set 'change' event listener for the checkbox.
+    // Set 'change' event listener for the checkbox.
     this._todoCheckboxEl.addEventListener("change", () => {
-      // when clicked, change completion from true to false or vice versa.
-      this._data.completed = !this._data.completed;
+      this._toggleCompletion();
+      this._handleCheck(this._data.completed);
     });
   }
 
@@ -22,8 +40,7 @@ class Todo {
     this._todoLabel = this._todoElement.querySelector(".todo__label");
     this._todoCheckboxEl.checked = this._data.completed;
 
-    // Apply id and for attributes.
-    // The id will initially be undefined for new todos.
+    // Applies 'id' and 'for' attributes to todos.
     this._todoCheckboxEl.id = `todo-${this._data.id}`;
     this._todoLabel.setAttribute("for", `todo-${this._data.id}`);
   }
